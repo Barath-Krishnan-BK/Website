@@ -45,7 +45,7 @@ const imageSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now }
 });
 const Image = mongoose.model('Image', imageSchema);
-app.use('/uploads', express.static('uploads'));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // POST route for file upload
 app.post('/api/upload', upload.single('file'), async (req, res) => {
