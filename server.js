@@ -1,50 +1,32 @@
 require('dotenv').config();
 const express = require('express');
-const multer = require('multer');
-const { MongoClient, GridFSBucket } = require('mongodb');
+const mongoose = require('mongoose');
 
 const app = express();
-const upload = multer({ storage: multer.memoryStorage() }); // store file in memory temporarily
+const port = process.env.PORT || 5000;
 
-const PORT = process.env.PORT || 5000;
-const MONGO_URI = process.env.MONGO_URI;
+// Middleware to parse JSON
+app.use(express.json());
 
-let db, bucket;
-
-async function connectDB() {
-  const client = new MongoClient(MONGO_URI);
-  await client.connect();
-  db = client.db('fileuploads'); // DB name
-  bucket = new GridFSBucket(db, { bucketName: 'uploads' });
-  console.log('Connected to MongoDB');
-}
-
-app.post('/upload', upload.single('file'), (req, res) => {
-  if (!req.file) {
-    return res.status(400).json({ error: 'No file uploaded' });
-  }
-
-  // Create upload stream into GridFS
-  const uploadStream = bucket.openUploadStream(req.file.originalname, {
-    contentType: req.file.mimetype,
+// Connect to MongoDB
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  // tls: true,               // uncomment if needed for SSL errors
+  // tlsAllowInvalidCertificates: true, // for testing only
+})
+  .then(() => console.log('MongoDB connected successfully'))
+  .catch(err => {
+    console.error('MongoDB connection error:', err);
+    process.exit(1); // exit on DB connection failure
   });
 
-  uploadStream.end(req.file.buffer);
-
-  uploadStream.on('finish', () => {
-    res.json({ fileId: uploadStream.id.toString(), filename: req.file.originalname });
-  });
-
-  uploadStream.on('error', (err) => {
-    res.status(500).json({ error: 'Upload failed', details: err.message });
-  });
+// Basic route
+app.get('/', (req, res) => {
+  res.send('Server is running');
 });
 
-connectDB().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
-
-app.listen(PORT, () => {
-  console.log(`Server started on port ${PORT}`);
+// Start server
+app.listen(port, () => {
+  console.log(`Server started on port ${port}`);
 });
