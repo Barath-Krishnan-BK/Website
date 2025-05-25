@@ -4,41 +4,32 @@ const cors = require('cors');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const nodemailer = require('nodemailer');
 
-// Initialize app
 const app = express();
 const PORT = process.env.PORT || 10000;
 
-// Middlewares
 app.use(cors());
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // MongoDB connection
-const mongoURI = 'mongodb+srv://barathkrishnan515:barathkrish25@bkcluster.irpvnvx.mongodb.net/mydatabase?retryWrites=true&w=majority'; // <- Replace this!
+const mongoURI = 'your-mongo-uri-here';
 mongoose.connect(mongoURI)
   .then(() => console.log('✅ MongoDB connected'))
-  .catch(err => console.error('❌ MongoDB connection error:', err));
+  .catch(err => console.error('❌ MongoDB error:', err));
 
-// Create upload folder if it doesn’t exist
-const uploadDir = path.join(__dirname, 'uploads');
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir);
-}
+// Create uploads folder if not exists
+if (!fs.existsSync('./uploads')) fs.mkdirSync('./uploads');
 
-// Multer setup
+// Multer storage
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads/');
-  },
-  filename: (req, file, cb) => {
-    const uniqueName = Date.now() + '-' + file.originalname;
-    cb(null, uniqueName);
-  }
+  destination: (req, file, cb) => cb(null, 'uploads/'),
+  filename: (req, file, cb) => cb(null, Date.now() + '-' + file.originalname)
 });
 const upload = multer({ storage: storage });
 
-// Mongoose model
+// Mongoose schema
 const fileSchema = new mongoose.Schema({
   filename: String,
   uploadDate: { type: Date, default: Date.now },
@@ -46,31 +37,48 @@ const fileSchema = new mongoose.Schema({
 });
 const UploadedFile = mongoose.model('UploadedFile', fileSchema);
 
+// Email setup (replace these with your real credentials)
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'barathkrishnan515@gmail.com',
+    pass: 'uekf goyb ecpi jdpy' // Use Gmail App Password (not your real password)
+  }
+});
+
 // Upload route
 app.post('/upload', upload.single('file'), async (req, res) => {
-  if (!req.file) {
-    return res.status(400).json({ error: 'No file uploaded.' });
-  }
+  if (!req.file) return res.status(400).json({ error: 'No file uploaded.' });
 
   const fileUrl = `/uploads/${req.file.filename}`;
-
   try {
     const newFile = new UploadedFile({
       filename: req.file.originalname,
       url: fileUrl
     });
-
     await newFile.save();
 
-    console.log('📁 File uploaded and saved in MongoDB:', newFile);
+    // Send email with attachment
+    await transporter.sendMail({
+      from: '"File Upload Bot" <yourgmail@gmail.com>',
+      to: 'barathkrishnan515@gmail.com',
+      subject: '📎 New File Uploaded',
+      text: `A new file has been uploaded: ${req.file.originalname}`,
+      attachments: [
+        {
+          filename: req.file.originalname,
+          path: path.join(__dirname, 'uploads', req.file.filename)
+        }
+      ]
+    });
+
     res.status(200).json({ success: true, fileId: newFile._id });
-  } catch (error) {
-    console.error('❌ Error saving to MongoDB:', error);
+  } catch (err) {
+    console.error('❌ Error:', err);
     res.status(500).json({ error: 'Server error.' });
   }
 });
 
-// Start server
 app.listen(PORT, () => {
   console.log(`🚀 Server started on port ${PORT}`);
 });
