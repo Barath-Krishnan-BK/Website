@@ -8,7 +8,7 @@
 <body>
   <h1>Upload a File</h1>
   <form id="uploadForm">
-    <input type="file" id="fileInput" name="file" required />
+    <input type="file" id="fileInput" name="file" accept="image/*" required />
     <button type="submit">Upload</button>
   </form>
 
@@ -32,7 +32,7 @@
       formData.append('file', file);
 
       try {
-        const res = await fetch('https://website-e0ko.onrender.com', {
+        const res = await fetch('https://website-e0ko.onrender.com/api/upload', {
           method: 'POST',
           body: formData,
         });
