@@ -12,8 +12,7 @@ app.use(cors());
 app.use(express.json());
 
 // MongoDB Connection
-const mongoURI = 'mongodb+srv://barathkrishnan515:barathkrish25@bkcluster.irpvnvx.mongodb.net/mydatabase?retryWrites=true&w=majority
-';
+const mongoURI = 'mongodb+srv://barathkrishnan515:barathkrish25@bkcluster.irpvnvx.mongodb.net/mydatabase?retryWrites=true&w=majority';
 
 mongoose.connect(mongoURI, {
     // These are not needed for Mongoose >= 6.0, but safe to include
