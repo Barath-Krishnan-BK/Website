@@ -5,20 +5,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>File Upload</title>
   <link rel="stylesheet" href="style.css">
+  
 </head>
 <body>
   <h1>Project for Uploading a File</h1>
+  <div id="box">
   <form id="uploadForm">
-    <input type="file" id="fileInput" name="file" accept="image/*" required />
+    <input type="file" id="fileInput" name="file" accept="image/*" required hidden />
+    <label for="fileInput" class="label1">Choose</label>
     <button type="submit">Upload</button>
   </form>
-
-  <p id="responseMsg"></p>
-
+  
+  
+  <div  id="responseMsg">Choose a File To Continue</div>
+  
+  
+</div>
   <script>
     const form = document.getElementById('uploadForm');
     const responseMsg = document.getElementById('responseMsg');
+    
 
+  fileInput.addEventListener("change", function () {
+    if (fileInput.files.length > 0) {
+      responseMsg.textContent = fileInput.files[0].name;
+    } else {
+      responseMsg.textContent = "No file chosen";
+    }
+  });
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
 
