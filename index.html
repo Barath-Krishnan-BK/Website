@@ -5,20 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>File Upload</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" href=REicon.png type="image/png">
   
 </head>
 <body>
-  <h1>Project for Uploading a File</h1>
+ 
+  <img src="banner.png" width="250px" align=center>
   <div id="box">
+     <label for="fileInput" class="label1">Choose</label>
+     <div  id="responseMsg">Choose a File To Continue</div>
   <form id="uploadForm">
     <input type="file" id="fileInput" name="file" accept="image/*" required hidden />
-    <label for="fileInput" class="label1">Choose</label>
+   
     <button id="btn" type="submit">Upload</button>
+    
   </form>
   
   
   
-  <div  id="responseMsg">Choose a File To Continue</div>
+ 
   
   
 </div>
@@ -55,7 +60,7 @@
 
         if (res.ok) {
           const data = await res.json();
-          responseMsg.textContent = 'Upload successful! File ID: ' + data.fileId;
+          responseMsg.textContent = 'Upload successful!';
         } else {
           responseMsg.textContent = 'Upload failed: ' + res.statusText;
         }

@@ -5,12 +5,12 @@ input{background-color: rgba(0, 0, 0, 0.438);color: aqua;border-radius: 10px;pad
 
 
 #box{
-    background-color: rgba(15, 10, 10, 0.332);border-radius: 15px;padding: 100px 30px;
+    background-color: rgba(15, 10, 10, 0.332);border-radius: 15px;padding: 50px 30px;
     margin-top: 5px;cursor: crosshair;
 }
 #responseMsg{
     background-color: rgba(15, 10, 10, 0.733);border-radius: 15px;padding: 10px 30px;
-    margin-top: 5px;cursor: crosshair;
+    margin-top: 15px;cursor: crosshair;
 }
 
 label{  background-color: black !important;
@@ -20,58 +20,40 @@ label{  background-color: black !important;
   font-size: 16px;
   cursor:grab;
   transition: 0.5s;
-margin-right: 400px;}
+  
+margin-bottom: 40px;}
   label:hover{
     background-color: #b3ff00 !important;
     color: rgb(0, 0, 0);
     
   }
-  #btn {
-    
- --glow-color: rgb(217, 176, 255);
- --glow-spread-color: rgba(191, 123, 255, 0.781);
- --enhanced-glow-color: rgb(231, 206, 255);
- --btn-color: rgb(100, 61, 136);
- border: .25em solid var(--glow-color);
- padding: 10px 20px;
- color: var(--glow-color);
- font-size: 15px;
- font-weight: bold;
- background-color: var(--btn-color);
- border-radius: 1em;
- outline: none;
- box-shadow: 0 0 1em .25em var(--glow-color),
-        0 0 4em 1em var(--glow-spread-color),
-        inset 0 0 .75em .25em var(--glow-color);
- text-shadow: 0 0 .5em var(--glow-color);
- position: relative;
- transition: all 0.3s;
-}
 
-#btn::after {
- pointer-events: none;
- content: "";
- position: absolute;
- top: 120%;
- left: 0;
- height: 100%;
- width: 100%;
- background-color: var(--glow-spread-color);
- filter: blur(2em);
- opacity: .7;
- transform: perspective(1.5em) rotateX(35deg) scale(1, .6);
+#btn {
+  padding: 10px 30px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  font-weight: 500;
+  color: #000;
+  background-color: #fff;
+  border: none;
+  border-radius: 45px;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease 0s;
+  cursor: pointer;
+  outline: none;
+  margin-top: 300px;
+  display: inline-block;
 }
 
 #btn:hover {
- color: var(--btn-color);
- background-color: var(--glow-color);
- box-shadow: 0 0 1em .25em var(--glow-color),
-        0 0 4em 2em var(--glow-spread-color),
-        inset 0 0 .75em .25em var(--glow-color);
+  background-color: #b161f7;
+  box-shadow: 0px 15px 20px rgba(116, 46, 229, 0.4);
+  color: #fff;
+  transform: translateY(-7px);
 }
 
 #btn:active {
- box-shadow: 0 0 0.6em .25em var(--glow-color),
-        0 0 2.5em 2em var(--glow-spread-color),
-        inset 0 0 .5em .25em var(--glow-color);
+  transform: translateY(-1px);
 }
+img{margin-left: 70px;}
