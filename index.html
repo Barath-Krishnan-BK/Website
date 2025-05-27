@@ -36,6 +36,7 @@
   const form = document.getElementById('uploadForm');
   const fileInput = document.getElementById('fileInput');
   const responseMsg = document.getElementById('responseMsg');
+  const userEmail = "user@example.com";  // Replace with actual value when needed
 
   fileInput.addEventListener("change", function () {
     if (fileInput.files.length > 0) {
@@ -59,6 +60,8 @@
     const formData = new FormData();
     formData.append('file', file);
     formData.append('prompt', prompt); // ← Append prompt
+    formData.append('email', userEmail);
+
 
     try {
       const res = await fetch('https://website-e0ko.onrender.com/upload', {

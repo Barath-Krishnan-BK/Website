@@ -5,6 +5,7 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const nodemailer = require('nodemailer');
+const session = require('express-session');
 
 const app = express();
 const PORT = process.env.PORT || 10000;
@@ -12,6 +13,19 @@ const PORT = process.env.PORT || 10000;
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(session({
+  secret: 'your-secret-key',  // Replace with a strong secret in production
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false }   // Set to true only if using HTTPS
+}));
+
+app.get('/set-email', (req, res) => {
+  req.session.email = 'user@example.com';  // Set this during login in real apps
+  res.send('Email saved in session');
+});
+
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // MongoDB connection
@@ -35,7 +49,9 @@ const fileSchema = new mongoose.Schema({
   filename: String,
   uploadDate: { type: Date, default: Date.now },
   url: String,
-  prompt: String
+  prompt: String,
+  email: String
+  
 });
 const UploadedFile = mongoose.model('UploadedFile', fileSchema);
 
@@ -52,16 +68,25 @@ const transporter = nodemailer.createTransport({
 app.post('/upload', upload.single('file'), async (req, res) => {
   console.log('BODY:', req.body);
   console.log('FILE:', req.file);
+  console.log('SESSION EMAIL:', req.session.email);
+
+  // Store email in session if sent from frontend
+if (req.body.email) {
+  req.session.email = req.body.email;
+}
+ const email = req.session.email;
+ const { prompt } = req.body;
 
   if (!req.file) return res.status(400).json({ error: 'No file uploaded.' });
-
-   const { prompt } = req.body;
+  
+ 
   const fileUrl = `/uploads/${req.file.filename}`;
   try {
     const newFile = new UploadedFile({
       filename: req.file.originalname,
       url: fileUrl,
-      prompt
+      prompt,
+      email
     });
     await newFile.save();
 
@@ -70,7 +95,7 @@ app.post('/upload', upload.single('file'), async (req, res) => {
       from: '"File Upload Bot" <yourgmail@gmail.com>',
       to: 'barathkrishnan515@gmail.com',
       subject: '📎 New File Uploaded',
-      text: `A new file has been uploaded: ${req.file.originalname}.\n\nPrompt: ${prompt}`,
+      text: `A new file has been uploaded: ${req.file.originalname}.\n\nPrompt: ${prompt}.by ${email}`,
       attachments: [
         {
           filename: req.file.originalname,
@@ -85,6 +110,8 @@ app.post('/upload', upload.single('file'), async (req, res) => {
     res.status(500).json({ error: 'Server error.' });
   }
 });
+
+
 
 app.listen(PORT, () => {
   console.log(`🚀 Server started on port ${PORT}`);
