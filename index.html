@@ -20,7 +20,7 @@
     <img src="banner.png" width="220px">
 
    </div>
-   <input type="text" placeholder="Entet A Prompt" name="prompt">
+   <input type="text" placeholder="Entet A Prompt" name="prompt" id="promptInput">
     <button id="btn" type="submit">Upload</button>
     
     
@@ -33,9 +33,9 @@
   
 </div>
   <script>
-    const form = document.getElementById('uploadForm');
-    const responseMsg = document.getElementById('responseMsg');
-    
+  const form = document.getElementById('uploadForm');
+  const fileInput = document.getElementById('fileInput');
+  const responseMsg = document.getElementById('responseMsg');
 
   fileInput.addEventListener("change", function () {
     if (fileInput.files.length > 0) {
@@ -44,36 +44,38 @@
       responseMsg.textContent = "No file chosen";
     }
   });
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
 
-      const fileInput = document.getElementById('fileInput');
-      const file = fileInput.files[0];
-      if (!file) {
-        responseMsg.textContent = 'Please select a file first!';
-        return;
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const file = fileInput.files[0];
+    const prompt = document.getElementById('promptInput').value; // ← Get prompt value
+
+    if (!file) {
+      responseMsg.textContent = 'Please select a file first!';
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('prompt', prompt); // ← Append prompt
+
+    try {
+      const res = await fetch('https://website-e0ko.onrender.com/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        responseMsg.textContent = 'Upload successful!';
+      } else {
+        responseMsg.textContent = 'Upload failed: ' + res.statusText;
       }
-
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('prompt', prompt);
-
-      try {
-        const res = await fetch('https://website-e0ko.onrender.com/upload', {
-          method: 'POST',
-          body: formData,
-        });
-
-        if (res.ok) {
-          const data = await res.json();
-          responseMsg.textContent = 'Upload successful!';
-        } else {
-          responseMsg.textContent = 'Upload failed: ' + res.statusText;
-        }
-      } catch (err) {
-        responseMsg.textContent = 'Error: ' + err.message;
-      }
-    });
-  </script>
+    } catch (err) {
+      responseMsg.textContent = 'Error: ' + err.message;
+    }
+  });
+</script>
 </body>
 </html>
