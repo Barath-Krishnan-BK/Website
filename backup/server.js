@@ -33,8 +33,7 @@ const upload = multer({ storage: storage });
 const fileSchema = new mongoose.Schema({
   filename: String,
   uploadDate: { type: Date, default: Date.now },
-  url: String,
-  prompt: String
+  url: String
 });
 const UploadedFile = mongoose.model('UploadedFile', fileSchema);
 
@@ -51,13 +50,11 @@ const transporter = nodemailer.createTransport({
 app.post('/upload', upload.single('file'), async (req, res) => {
   if (!req.file) return res.status(400).json({ error: 'No file uploaded.' });
 
-   const { prompt } = req.body;
   const fileUrl = `/uploads/${req.file.filename}`;
   try {
     const newFile = new UploadedFile({
       filename: req.file.originalname,
-      url: fileUrl,
-      prompt
+      url: fileUrl
     });
     await newFile.save();
 
@@ -66,7 +63,7 @@ app.post('/upload', upload.single('file'), async (req, res) => {
       from: '"File Upload Bot" <yourgmail@gmail.com>',
       to: 'barathkrishnan515@gmail.com',
       subject: '📎 New File Uploaded',
-      text: `A new file has been uploaded: ${req.file.originalname}.\n\nPrompt: ${prompt}`,
+      text: `A new file has been uploaded: ${req.file.originalname}`,
       attachments: [
         {
           filename: req.file.originalname,
