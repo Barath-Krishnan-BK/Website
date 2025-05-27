@@ -56,6 +56,7 @@
 
       const formData = new FormData();
       formData.append('file', file);
+      formData.append('prompt', prompt);
 
       try {
         const res = await fetch('https://website-e0ko.onrender.com/upload', {
