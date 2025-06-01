@@ -5,7 +5,7 @@ body{background-image: url(bg1.jpg);color: aliceblue;transition: 0.5s;font-famil
   font-weight: 500;
  }
 #bannerbox{width: 270px;height: 60px;overflow: hidden;}
-#banner{top:-30px;position: relative;}
+#banner{top:-17px;position: relative;}
 input{background-color: rgba(0, 0, 0, 0.438);color: aqua;border-radius: 10px;padding: 10px 15px;}
 
 
@@ -65,7 +65,7 @@ label{  background-color: black !important;
 #btn:active {
   transform: translateY(-1px);
 }
-img{}
+
 #picholder{background-color: #0000006b;border-radius: 20px;margin-top: 50px; display: flex;
   min-height: 100px; 
   max-height: 500px;
