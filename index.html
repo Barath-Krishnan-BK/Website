@@ -9,19 +9,27 @@
   
 </head>
 <body>
- 
-  <img src="banner.png" width="250px" align=center>
+  <div id="bannerbox">
+  <img src="banner.png" width="200px" align=center id="banner">
+  </div>
   <div id="box">
-     <label for="fileInput" class="label1">Choose</label>
+     
      <div  id="responseMsg">Choose a File To Continue</div>
+     <label for="fileInput" class="label1">Select📂</label>
   <form id="uploadForm">
     <input type="file" id="fileInput" name="file" accept="image/*" required hidden />
+    <div class="loader" id="loader1">
+    <span class="loader-text">loading</span> <span class="load" ></span>
+  </div>
    <div id="picholder">
-    <img src="banner.png" width="220px">
+    <img src="banner.png" width="300px" id="image">
 
    </div>
-   <input type="text" placeholder="Entet A Prompt" name="prompt" id="promptInput">
-    <button id="btn" type="submit">Upload</button>
+   
+  
+
+   <input type="text" placeholder="Enter a prompt" id="Prompt">
+    <button id="btn" type="submit">↩</button>
     
     
   </form>
@@ -33,52 +41,60 @@
   
 </div>
   <script>
-  const form = document.getElementById('uploadForm');
-  const fileInput = document.getElementById('fileInput');
-  const responseMsg = document.getElementById('responseMsg');
-  const userEmail = "user@example.com";  // Replace with actual value when needed
+    const form = document.getElementById('uploadForm');
+    const responseMsg = document.getElementById('responseMsg');
+    const e1 = document.getElementById('loader1');
+    const im=document.getElementById('image');
 
   fileInput.addEventListener("change", function () {
     if (fileInput.files.length > 0) {
       responseMsg.textContent = fileInput.files[0].name;
+      im.src=URL.createObjectURL( fileInput.files[0]);
     } else {
       responseMsg.textContent = "No file chosen";
     }
   });
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
 
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
+      const fileInput = document.getElementById('fileInput');
+      const file = fileInput.files[0];
+      
 
-    const file = fileInput.files[0];
-    const prompt = document.getElementById('promptInput').value; // ← Get prompt value
-
-    if (!file) {
-      responseMsg.textContent = 'Please select a file first!';
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('prompt', prompt); // ← Append prompt
-    formData.append('email', userEmail);
-
-
-    try {
-      const res = await fetch('https://website-e0ko.onrender.com/upload', {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (res.ok) {
-        const data = await res.json();
-        responseMsg.textContent = 'Upload successful!';
-      } else {
-        responseMsg.textContent = 'Upload failed: ' + res.statusText;
+      e1.style.visibility = "visible";
+      if (!file) {
+        responseMsg.textContent = 'Please select a file first!';
+        return;
       }
-    } catch (err) {
-      responseMsg.textContent = 'Error: ' + err.message;
+
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('prompt', prompt);
+      
+
+      try {
+        const res = await fetch('https://website-e0ko.onrender.com/upload', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          responseMsg.textContent = 'Upload successful!';
+        } else {
+          responseMsg.textContent = 'Upload failed: ' + res.statusText;
+        }
+      } catch (err) {
+        responseMsg.textContent = 'Error: ' + err.message;
+      }finally{
+       
+    
+    e1.style.visibility = "hidden"; // Correct spelling!
+
     }
-  });
-</script>
+  
+     
+    });
+  </script>
 </body>
 </html>

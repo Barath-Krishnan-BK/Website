@@ -1,22 +1,27 @@
 h1{text-align: center;font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; color: rgb(252, 192, 254);}
-body{background-image: url(bg1.jpg);color: aliceblue;transition: 0.5s;
+body{background-image: url(bg1.jpg);color: aliceblue;transition: 0.5s;font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  font-weight: 500;
  }
-
+#bannerbox{width: 270px;height: 60px;overflow: hidden;}
+#banner{top:-30px;position: relative;}
 input{background-color: rgba(0, 0, 0, 0.438);color: aqua;border-radius: 10px;padding: 10px 15px;}
 
 
 #box{
-    background-color: rgba(15, 10, 10, 0.332);border-radius: 15px;padding: 50px 30px;
+    background-color: rgba(15, 10, 10, 0.332);border-radius: 15px;padding: 30px 30px;
     margin-top: 5px;cursor: crosshair;
 }
 #responseMsg{
     background-color: rgba(15, 10, 10, 0.733);border-radius: 15px;padding: 10px 30px;
-    margin-top: 25px;cursor: crosshair;
+    margin-bottom: 25px;cursor: crosshair;
 }
 
 label{  background-color: black !important;
-    color:#b3ff00;
+  color:#15ff00;
   padding: 10px 20px;
+  margin-left: 5px;
   border-radius: 16px;
  font-size: 12px;
   text-transform: uppercase;
@@ -25,9 +30,9 @@ label{  background-color: black !important;
   cursor:grab;
   transition: 0.5s;
   
-margin-bottom: 40px;}
+}
   label:hover{
-    background-color: #b3ff00 !important;
+    background-color: #15ff00 !important;
     color: rgb(0, 0, 0);
     
   }
@@ -60,7 +65,156 @@ margin-bottom: 40px;}
 #btn:active {
   transform: translateY(-1px);
 }
-img{margin-left: 70px;border-radius: 20px;}
-#picholder{background-color: #0000006b;border-radius: 20px;margin-top: 40px;padding: 10px;height: 400px; ;}
+img{margin: 10px;border-radius: 20px;padding: 10px;}
+#picholder{background-color: #0000006b;border-radius: 20px;margin-top: 50px; display: flex;
+  min-height: 100px; 
+  max-height: 500px;
+  max-width: 500px; /* or any desired width */
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  overflow:scroll;
+  padding: 10px;
+  transition: height 0.3s ease;
+}
+
+#picholder img {
+  max-width: 90%;
+  height: auto;
+  display: block;
+}
+
 input[type="text"]{background-color: rgb(255, 255, 255);color: #000;transition: 0.3s;width: 300px;margin-top: 20px;}
 input[type="text"]:hover{background-color: rgb(234, 216, 255);color: #000;}
+/* From Uiverse.io by alexruix */ 
+.loader {
+  bottom: 10px;
+  width: 80px;
+  height: 50px;
+  position: relative;
+  display: inline;
+}
+
+.loader-text {
+  position: absolute;
+  bottom: 1px;
+  left: 200px;
+  padding: 0;
+  margin: 0;
+  color: #C8B6FF;
+  animation: text_713 3.5s ease both infinite;
+  font-size: .8rem;
+  letter-spacing: 1px;
+}
+
+#loader1 {
+  visibility: hidden;
+  /* other styles as before */
+}
+
+.load {
+  background-color: #9A79FF;
+  border-radius: 50px;
+  display: inline-block;
+  height: 16px;
+  width: 16px;
+  bottom: 0;
+  position: absolute;
+  transform: translateX(64px);
+  animation: loading_713 3.5s ease both infinite;
+  
+}
+
+.load::before {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 100%;
+  background-color: #D1C2FF;
+  border-radius: inherit;
+  animation: loading2_713 3.5s ease both infinite;
+}
+
+@keyframes text_713 {
+  0% {
+    letter-spacing: 1px;
+    transform: translateX(0px);
+  }
+
+  40% {
+    letter-spacing: 2px;
+    transform: translateX(26px);
+  }
+
+  80% {
+    letter-spacing: 1px;
+    transform: translateX(32px);
+  }
+
+  90% {
+    letter-spacing: 2px;
+    transform: translateX(0px);
+  }
+
+  100% {
+    letter-spacing: 1px;
+    transform: translateX(0px);
+  }
+}
+
+@keyframes loading_713 {
+  0% {
+    width: 160px;
+    transform: translateX(0px);
+  }
+
+  40% {
+    width: 100%;
+    transform: translateX(0px);
+  }
+
+  80% {
+    width: 160px;
+    transform: translateX(64px);
+  }
+
+  90% {
+    width: 100%;
+    transform: translateX(0px);
+  }
+
+  100% {
+    width: 160px;
+    transform: translateX(0px);
+  }
+}
+
+@keyframes loading2_713 {
+  0% {
+    transform: translateX(0px);
+    width: 160px;
+  }
+
+  40% {
+    transform: translateX(0%);
+    width: 80%;
+  }
+
+  80% {
+    width: 100%;
+    transform: translateX(0px);
+  }
+
+  90% {
+    width: 80%;
+    transform: translateX(15px);
+  }
+
+  100% {
+    transform: translateX(0px);
+    width: 160px;
+  }
+}
+ 
+ 
+
