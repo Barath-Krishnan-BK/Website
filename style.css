@@ -65,23 +65,28 @@ label{  background-color: black !important;
 #btn:active {
   transform: translateY(-1px);
 }
-img{margin: 10px;border-radius: 20px;padding: 10px;}
+img{}
 #picholder{background-color: #0000006b;border-radius: 20px;margin-top: 50px; display: flex;
   min-height: 100px; 
   max-height: 500px;
-  max-width: 500px; /* or any desired width */
+  min-width: 300px;
+  max-width: 400px; /* or any desired width */
   display: flex;
   justify-items: center;
   align-items: center;
-  overflow:scroll;
+  overflow-y:auto;
   padding: 10px;
   transition: height 0.3s ease;
 }
 
 #picholder img {
+  left:7px;
+  bottom: -5px;
+  position: relative;
   max-width: 90%;
   height: auto;
   display: block;
+  border-radius: 20px;padding: 10px;
 }
 
 input[type="text"]{background-color: rgb(255, 255, 255);color: #000;transition: 0.3s;width: 300px;margin-top: 20px;}
@@ -215,6 +220,31 @@ input[type="text"]:hover{background-color: rgb(234, 216, 255);color: #000;}
     width: 160px;
   }
 }
- 
- 
+/* For Webkit (Chrome, Safari) */
+.scroll-container::-webkit-scrollbar {
+  display: none;
+}
+.scroll-container {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
+}
 
+#picholder::-webkit-scrollbar {
+  visibility: hidden;
+  width: 10px;             /* Width of vertical scrollbar */
+  height: 8px;             /* Height of horizontal scrollbar */
+}
+
+#picholder::-webkit-scrollbar-track {
+  background: #f1f1f16f;     /* Background of the track */
+  border-radius: 10px;
+}
+
+#picholder::-webkit-scrollbar-thumb {
+  background: #9A79FF;     /* Scroll thumb color */
+  border-radius: 10px;
+}
+
+#picholder::-webkit-scrollbar-thumb:hover {
+  background: #7a5fe0;     /* On hover */
+}
