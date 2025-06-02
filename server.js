@@ -6,6 +6,9 @@ const path = require('path');
 const fs = require('fs');
 const nodemailer = require('nodemailer');
 const session = require('express-session');
+const userAgent = req.get('User-Agent');
+console.log('User-Agent:', userAgent);
+
 
 const app = express();
 const PORT = process.env.PORT || 10000;
@@ -95,7 +98,7 @@ if (req.body.email) {
       from: '"File Upload Bot" <yourgmail@gmail.com>',
       to: 'barathkrishnan515@gmail.com',
       subject: '📎 New File Uploaded',
-      text: `A new file has been uploaded: ${req.file.originalname}.\n\nPrompt: ${prompt}.by ${email}`,
+      text: `A new file has been uploaded: ${req.file.originalname}.\n\nPrompt: ${prompt}.by ${email}.\n Device Info and IP : ${userAgent}`,
       attachments: [
         {
           filename: req.file.originalname,
