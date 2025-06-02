@@ -6,8 +6,8 @@ const path = require('path');
 const fs = require('fs');
 const nodemailer = require('nodemailer');
 const session = require('express-session');
-const userAgent = req.get('User-Agent');
-console.log('User-Agent:', userAgent);
+
+
 
 
 const app = express();
@@ -72,6 +72,7 @@ app.post('/upload', upload.single('file'), async (req, res) => {
   console.log('BODY:', req.body);
   console.log('FILE:', req.file);
   console.log('SESSION EMAIL:', req.session.email);
+  const userAgent = req.get('User-Agent');
 
   // Store email in session if sent from frontend
 if (req.body.email) {
