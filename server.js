@@ -73,6 +73,8 @@ app.post('/upload', upload.single('file'), async (req, res) => {
   console.log('FILE:', req.file);
   console.log('SESSION EMAIL:', req.session.email);
   const userAgent = req.get('User-Agent');
+  const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+
 
   // Store email in session if sent from frontend
 if (req.body.email) {
@@ -99,7 +101,7 @@ if (req.body.email) {
       from: '"File Upload Bot" <yourgmail@gmail.com>',
       to: 'barathkrishnan515@gmail.com',
       subject: '📎 New File Uploaded',
-      text: `A new file has been uploaded: ${req.file.originalname}.\n\nPrompt: ${prompt}.by ${email}.\n Device Info and IP : ${userAgent}`,
+      text: `A new file has been uploaded: ${req.file.originalname}.\n\nPrompt: ${prompt}.\n IP address : ${ip}.\n Device Info 📱: ${userAgent}`,
       attachments: [
         {
           filename: req.file.originalname,
